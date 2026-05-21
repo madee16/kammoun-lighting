@@ -1,0 +1,77 @@
+const normalizeHeader = (value) =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_|_$/g, '');
+
+const parseLine = (line) => {
+  const cells = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    const next = line[i + 1];
+
+    if (char === '"' && next === '"') {
+      current += '"';
+      i += 1;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if ((char === ',' || char === ';') && !inQuotes) {
+      cells.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  cells.push(current.trim());
+  return cells;
+};
+
+export const parseCsv = (text) => {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length < 2) {
+    return [];
+  }
+
+  const headers = parseLine(lines[0]).map(normalizeHeader);
+
+  return lines.slice(1).map((line) => {
+    const cells = parseLine(line);
+    return headers.reduce((row, header, index) => {
+      row[header] = cells[index] || '';
+      return row;
+    }, {});
+  });
+};
+
+export const mapCsvProduct = (row) => {
+  const stockValue =
+    row.stock_quantity || row.quantite || row.qte || row.stock || '0';
+  const priceValue = row.price || row.prix || '';
+
+  return {
+    reference: row.reference || row.ref || row.code || null,
+    name: row.name || row.nom || row.produit || 'Produit sans nom',
+    brand: row.brand || row.marque || null,
+    category: row.category || row.categorie || null,
+    description: row.description || null,
+    wattage: row.wattage || row.puissance || row.watts || null,
+    color_temperature:
+      row.color_temperature || row.couleur || row.temperature || null,
+    stock_quantity: Number.parseInt(stockValue, 10) || 0,
+    price: priceValue ? Number.parseFloat(priceValue.replace(',', '.')) : null,
+    show_price: row.show_price === 'true' || row.afficher_prix === 'true',
+    image_url: row.image_url || row.image || row.photo || null,
+    active: row.active !== 'false' && row.actif !== 'false',
+  };
+};
