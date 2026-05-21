@@ -903,7 +903,7 @@ function NavBar({ currentRoute, navigate }) {
       >
       <span className="brand-mark">
           <img
-              src="/logo.png"
+              src="D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG"
               alt="Kammoun Lighting Logo"
           />
       </span>
