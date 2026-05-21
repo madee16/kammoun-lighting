@@ -54,6 +54,26 @@ ref,nom,marque,categorie,description,puissance,couleur,quantite,prix,afficher_pr
 `reference` doit rester unique. C'est ce champ qui permet de mettre a jour le
 meme produit pendant un nouvel import.
 
+Colonnes optionnelles ajoutees:
+
+```text
+image_urls,availability_status,is_new,featured,sort_order
+```
+
+Pour `image_urls`, mettre plusieurs images separees par `|`.
+Pour `availability_status`, utiliser `auto`, `available`, `request` ou `order`.
+
+## Mettre a jour une base Supabase existante
+
+Si la table `products` existe deja, executer aussi:
+
+```text
+supabase/update_features.sql
+```
+
+Cela ajoute la galerie d'images, le statut, le badge nouveaute et l'ordre
+d'affichage.
+
 ## Deployer sur Vercel
 
 1. Pousser le projet sur GitHub.
