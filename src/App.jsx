@@ -900,7 +900,11 @@ function NavBar({ currentRoute, navigate }) {
           navigate('/');
         }}
       >
-        <span className="brand-mark">KL</span>
+        <img
+          src="C:\Users\user\Downloads\D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG"
+          alt="Kammoun Lighting Logo"
+          className="brand-mark"
+        />
         <span>
           <strong>Kammoun Lighting</strong>
           <small>{storeInfo.legalName}</small>
