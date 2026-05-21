@@ -901,9 +901,9 @@ function NavBar({ currentRoute, navigate }) {
         }}
       >
         <img
-          src="D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG"
-          alt="Kammoun Lighting Logo"
-          className="brand-mark"
+              src={`${process.env.PUBLIC_URL}/D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG`}
+              alt="Logo"
+              className="brand-mark"
         />
         <span>
           <strong>Kammoun Lighting</strong>
