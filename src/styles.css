@@ -71,14 +71,12 @@ a {
 .brand-mark {
   width: 42px;
   height: 42px;
-  border-radius: 7px;
-  background: var(--gold);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 6px; /* gives breathing room */
+  border-radius: 7px;
+  background: var(--gold);
+  overflow: hidden; /* keeps image inside box */
 }
 
 .brand-mark img {
