@@ -894,24 +894,25 @@ function NavBar({ currentRoute, navigate }) {
   return (
     <header className="site-nav">
       <a
-        className="brand-lockup"
-        href="/"
-        onClick={(event) => {
-          event.preventDefault();
-          navigate('/');
-        }}
+            className="brand-lockup"
+            href="/"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate('/');
+                }}
       >
+      <span className="brand-mark">
+          <img
+              src="/logo.png"
+              alt="Kammoun Lighting Logo"
+          />
+      </span>
 
-        <img
-                src={logo}
-                alt="Logo"
-                className="brand-mark"
-        />
-        <span>
+      <span>
           <strong>Kammoun Lighting</strong>
           <small>{storeInfo.legalName}</small>
-        </span>
-      </a>
+      </span>
+    </a>
       <nav aria-label="Navigation principale">
         {navItems.map((item) => (
           <a
