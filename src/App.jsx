@@ -1,3 +1,4 @@
+import logo from "D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG";
 import { useEffect, useMemo, useState } from 'react';
 import readXlsxFile from 'read-excel-file/browser';
 import {
@@ -900,10 +901,11 @@ function NavBar({ currentRoute, navigate }) {
           navigate('/');
         }}
       >
+
         <img
-              src={`${process.env.PUBLIC_URL}/D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG`}
-              alt="Logo"
-              className="brand-mark"
+                src={logo}
+                alt="Logo"
+                className="brand-mark"
         />
         <span>
           <strong>Kammoun Lighting</strong>
