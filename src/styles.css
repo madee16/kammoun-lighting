@@ -69,12 +69,13 @@ a {
 }
 
 .brand-mark {
-  align-items: center; background: var(--gold);
+  align-items: center;
+  background: var(--gold);
   border-radius: 7px;
   color: #1f180c;
   display: inline-flex;
   font-weight: 900;
-  height: 42px; 
+  height: 42px;
   justify-content: center;
   width: 42px;
 }
@@ -1436,3 +1437,4 @@ footer span {
     align-items: stretch;
   }
 }
+
