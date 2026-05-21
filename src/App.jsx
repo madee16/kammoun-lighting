@@ -54,12 +54,11 @@ const storeInfo = {
   brandName: 'Kammoun Lighting',
   phone: '+216 22 400 000',
   address: 'Tunisie',
-  mapUrl: '',
-  facebookUrl: '',
+  mapUrl: 'QQ36+6H8, Rte de Tunis, Sfax',
+  facebookUrl: 'https://www.facebook.com/p/Sté-MEM-délectricité-100054271100283/',
   openingHours: [
-    'Lundi - Vendredi: a confirmer',
-    'Samedi: a confirmer',
-    'Dimanche: a confirmer',
+    'Lundi - Vendredi: 8AM -> 6PM',
+    'Samedi: 8AM -> 3PM',
   ],
 };
 
