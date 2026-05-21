@@ -1,4 +1,3 @@
-import logo from "D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG";
 import { useEffect, useMemo, useState } from 'react';
 import readXlsxFile from 'read-excel-file/browser';
 import {
@@ -54,12 +53,13 @@ const storeInfo = {
   legalName: "Societe MEM d'Electricite",
   brandName: 'Kammoun Lighting',
   phone: '+216 22 400 000',
-  address: 'Tunisie, Sfax',
-  mapUrl: 'https://maps.app.goo.gl/ggYgdYcYCyWqdn5i7',
-  facebookUrl: 'https://www.facebook.com/p/Sté-MEM-délectricité-100054271100283/',
+  address: 'Tunisie',
+  mapUrl: '',
+  facebookUrl: '',
   openingHours: [
-    'Lundi - Vendredi: 8AM -> 6PM',
-    'Samedi: 8AM -> 3PM',
+    'Lundi - Vendredi: a confirmer',
+    'Samedi: a confirmer',
+    'Dimanche: a confirmer',
   ],
 };
 
@@ -907,7 +907,6 @@ function NavBar({ currentRoute, navigate }) {
           <small>{storeInfo.legalName}</small>
         </span>
       </a>
-
       <nav aria-label="Navigation principale">
         {navItems.map((item) => (
           <a
@@ -923,7 +922,6 @@ function NavBar({ currentRoute, navigate }) {
           </a>
         ))}
       </nav>
-
       <a
         className="nav-whatsapp"
         href={`https://wa.me/${whatsappNumber}`}
@@ -936,6 +934,7 @@ function NavBar({ currentRoute, navigate }) {
     </header>
   );
 }
+
 function Hero({ navigate }) {
   return (
     <section className="hero">
@@ -1650,3 +1649,4 @@ function Footer({ navigate }) {
 }
 
 export default App;
+
