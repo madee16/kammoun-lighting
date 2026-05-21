@@ -69,20 +69,14 @@ a {
 }
 
 .brand-mark {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; background: var(--gold);
   border-radius: 7px;
-  background: var(--gold);
-  overflow: hidden; /* keeps image inside box */
-}
-
-.brand-mark img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  color: #1f180c;
+  display: inline-flex;
+  font-weight: 900;
+  height: 42px; 
+  justify-content: center;
+  width: 42px;
 }
 
 .brand-lockup strong,
