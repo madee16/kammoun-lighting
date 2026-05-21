@@ -894,25 +894,20 @@ function NavBar({ currentRoute, navigate }) {
   return (
     <header className="site-nav">
       <a
-            className="brand-lockup"
-            href="/"
-            onClick={(event) => {
-              event.preventDefault();
-              navigate('/');
-                }}
+        className="brand-lockup"
+        href="/"
+        onClick={(event) => {
+          event.preventDefault();
+          navigate('/');
+        }}
       >
-      <span className="brand-mark">
-          <img
-              src="D01E7C7C-3E94-4CC5-8F9C-A3D92F26C5BF.PNG"
-              alt="Kammoun Lighting Logo"
-          />
-      </span>
-
-      <span>
+        <span className="brand-mark">KL</span>
+        <span>
           <strong>Kammoun Lighting</strong>
           <small>{storeInfo.legalName}</small>
-      </span>
-    </a>
+        </span>
+      </a>
+
       <nav aria-label="Navigation principale">
         {navItems.map((item) => (
           <a
@@ -928,6 +923,7 @@ function NavBar({ currentRoute, navigate }) {
           </a>
         ))}
       </nav>
+
       <a
         className="nav-whatsapp"
         href={`https://wa.me/${whatsappNumber}`}
@@ -940,7 +936,6 @@ function NavBar({ currentRoute, navigate }) {
     </header>
   );
 }
-
 function Hero({ navigate }) {
   return (
     <section className="hero">
