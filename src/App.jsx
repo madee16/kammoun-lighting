@@ -53,7 +53,7 @@ const storeInfo = {
   legalName: "Societe MEM d'Electricite",
   brandName: 'Kammoun Lighting',
   phone: '+216 22 400 000',
-  address: 'Tunisie',
+  address: 'Tunisie, Sfax',
   mapUrl: 'https://maps.app.goo.gl/ggYgdYcYCyWqdn5i7',
   facebookUrl: 'https://www.facebook.com/p/Sté-MEM-délectricité-100054271100283/',
   openingHours: [
