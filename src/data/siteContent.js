@@ -38,12 +38,11 @@ export const STORE_INFO = {
   phone: '+216 22 400 000',
   telHref: 'tel:+21622400000',
   address: 'Tunisie',
-  mapUrl: '',
-  facebookUrl: '',
+  mapUrl: 'https://maps.app.goo.gl/6Sqn7qhkrnVcyZRU6',
+  facebookUrl: 'https://www.facebook.com/p/Sté-MEM-délectricité-100054271100283/',
   openingHours: [
-    'Lundi - Vendredi: a confirmer',
-    'Samedi: a confirmer',
-    'Dimanche: a confirmer',
+    'Lundi - Vendredi: 8h à 17h',
+    'Samedi: 8h à 15h',
   ],
 };
 
