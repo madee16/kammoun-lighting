@@ -59,6 +59,7 @@ import {
   whatsappSimpleMessage,
 } from './lib/productUtils.js';
 import { spreadsheetRowsToProducts } from './lib/spreadsheet.js';
+import { applyRouteMeta } from './lib/seo.js';
 import { hasSupabaseConfig, supabase, whatsappNumber } from './lib/supabase.js';
 
 function App() {
@@ -70,6 +71,10 @@ function App() {
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
+
+  useEffect(() => {
+    applyRouteMeta(currentRoute, products);
+  }, [currentRoute, products]);
 
   const navigate = (path) => {
     window.history.pushState({}, '', path);
@@ -1718,7 +1723,6 @@ function Footer({ navigate }) {
 }
 
 export default App;
-
 
 
 
