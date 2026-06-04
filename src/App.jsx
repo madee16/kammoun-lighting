@@ -32,6 +32,7 @@ import {
   ADMIN_STATS,
   ADMIN_TEXT_FIELDS,
   AVAILABILITY_OPTIONS,
+  BRAND_LOGOS,
   CONTACT_CARDS,
   CONTACT_INFO_PANELS,
   DEFAULT_CATEGORIES,
@@ -41,6 +42,7 @@ import {
   PRODUCT_DETAIL_FIELDS,
   ROUTES,
   STORE_INFO,
+  TESTIMONIALS,
 } from './data/siteContent.js';
 import { sampleProducts } from './data/sampleProducts.js';
 import { mapCsvProduct, parseCsv } from './lib/csv.js';
@@ -230,6 +232,7 @@ function HomePage({ products, loading, navigate }) {
       <Hero navigate={navigate} />
       <CategoryHighlights navigate={navigate} />
       <BrandStrip products={products} navigate={navigate} />
+      <BrandLogosSection />
       <section className="section home-intro">
         <div>
           <p className="eyebrow">{PAGE_COPY.homeIntro.eyebrow}</p>
@@ -285,7 +288,159 @@ function HomePage({ products, loading, navigate }) {
           </div>
         </div>
       </section>
+      <TestimonialsSection />
     </>
+  );
+}
+
+function BrandLogosSection() {
+  return (
+    <section className="section brand-logo-section">
+      <div className="section-header">
+        <div>
+          <p className="eyebrow">{PAGE_COPY.brandLogos.eyebrow}</p>
+          <h2>{PAGE_COPY.brandLogos.title}</h2>
+        </div>
+        <p className="section-note">{PAGE_COPY.brandLogos.text}</p>
+      </div>
+      <div className="brand-logo-grid">
+        {BRAND_LOGOS.map((brand) => {
+          const content = (
+            <>
+              <img src={brand.logoUrl} alt={brand.name} />
+              <strong>{brand.name}</strong>
+            </>
+          );
+
+          return brand.website ? (
+            <a
+              className="brand-logo-card"
+              href={brand.website}
+              key={brand.name}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {content}
+            </a>
+          ) : (
+            <div className="brand-logo-card" key={brand.name}>
+              {content}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function TestimonialsSection() {
+  const [visitorName, setVisitorName] = useState('');
+  const [visitorLocation, setVisitorLocation] = useState('');
+  const [comment, setComment] = useState('');
+  const [formStatus, setFormStatus] = useState('');
+  const [approvedTestimonials, setApprovedTestimonials] = useState(TESTIMONIALS);
+
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      if (!supabase) return;
+
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('id,name,location,comment,created_at')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+
+      if (!error && data?.length) {
+        setApprovedTestimonials(
+          data.map((testimonial) => ({
+            ...testimonial,
+            text: testimonial.comment,
+          })),
+        );
+      }
+    };
+
+    loadTestimonials();
+  }, []);
+
+  const submitComment = async (event) => {
+    event.preventDefault();
+
+    if (!visitorName.trim() || !comment.trim()) {
+      setFormStatus(PAGE_COPY.testimonials.missingFieldsMessage);
+      return;
+    }
+
+    if (!supabase) {
+      setFormStatus(PAGE_COPY.testimonials.errorMessage);
+      return;
+    }
+
+    const { error } = await supabase.from('testimonials').insert({
+      name: visitorName.trim(),
+      location: visitorLocation.trim() || null,
+      comment: comment.trim(),
+      approved: false,
+    });
+
+    if (error) {
+      setFormStatus(PAGE_COPY.testimonials.errorMessage);
+      return;
+    }
+
+    setVisitorName('');
+    setVisitorLocation('');
+    setComment('');
+    setFormStatus(PAGE_COPY.testimonials.successMessage);
+  };
+
+  return (
+    <section className="section testimonials-section">
+      <div className="section-header">
+        <div>
+          <p className="eyebrow">{PAGE_COPY.testimonials.eyebrow}</p>
+          <h2>{PAGE_COPY.testimonials.title}</h2>
+        </div>
+        <p className="section-note">{PAGE_COPY.testimonials.text}</p>
+      </div>
+      <div className="testimonial-layout">
+        <div className="testimonial-grid">
+          {approvedTestimonials.map((testimonial) => (
+            <article className="testimonial-card" key={testimonial.id || testimonial.name}>
+              <p>{testimonial.text}</p>
+              <div>
+                <strong>{testimonial.name}</strong>
+                {testimonial.location && <span>{testimonial.location}</span>}
+              </div>
+            </article>
+          ))}
+        </div>
+        <form className="comment-form" onSubmit={submitComment}>
+          <h3>{PAGE_COPY.testimonials.formTitle}</h3>
+          <input
+            value={visitorName}
+            onChange={(event) => setVisitorName(event.target.value)}
+            placeholder={PAGE_COPY.testimonials.namePlaceholder}
+          />
+          <input
+            value={visitorLocation}
+            onChange={(event) => setVisitorLocation(event.target.value)}
+            placeholder={PAGE_COPY.testimonials.locationPlaceholder}
+          />
+          <textarea
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            placeholder={PAGE_COPY.testimonials.commentPlaceholder}
+            rows="4"
+          />
+          <button className="primary-button" type="submit">
+            {PAGE_COPY.testimonials.submitLabel}
+          </button>
+          <p>{PAGE_COPY.testimonials.helperText}</p>
+          {formStatus && <p className="form-status">{formStatus}</p>}
+        </form>
+      </div>
+    </section>
   );
 }
 
@@ -799,7 +954,7 @@ function NavBar({ currentRoute, navigate }) {
           navigate(ROUTES.home);
         }}
       >
-        <span className="brand-mark">{STORE_INFO.brandInitials}</span>
+        <img className="brand-logo" src={STORE_INFO.logoPath} alt={STORE_INFO.brandName} />
         <span>
           <strong>{STORE_INFO.brandName}</strong>
           <small>{STORE_INFO.legalName}</small>
@@ -891,7 +1046,6 @@ function CategoryHighlights({ navigate }) {
 function ProductCard({ product, navigate }) {
   const available = product.stock_quantity > 0;
   const priceMessage = whatsappProductMessage(product, 'price');
-  const availabilityMessage = whatsappProductMessage(product, 'availability');
   const priceVisible = product.show_price && product.price;
   const mainImage = productImages(product)[0];
 
@@ -955,14 +1109,6 @@ function ProductCard({ product, navigate }) {
             <MessageCircle size={18} />
             Prix
           </a>
-          <a
-            className="secondary-action compact-action"
-            href={`https://wa.me/${whatsappNumber}?text=${availabilityMessage}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Stock
-          </a>
         </div>
       </div>
     </article>
@@ -994,6 +1140,9 @@ function AdminPage() {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY_PRODUCT);
   const [status, setStatus] = useState('');
+  const [inventoryQuery, setInventoryQuery] = useState('');
+  const [adminTestimonials, setAdminTestimonials] = useState([]);
+  const [testimonialStatus, setTestimonialStatus] = useState('');
   const knownCategories = useMemo(
     () => [
       ...new Set([
@@ -1019,6 +1168,7 @@ function AdminPage() {
   useEffect(() => {
     if (session) {
       loadAdminProducts(setProducts, setStatus);
+      loadAdminTestimonials(setAdminTestimonials, setTestimonialStatus);
     }
   }, [session]);
 
@@ -1121,6 +1271,25 @@ function AdminPage() {
     () => ADMIN_STATS.map((item) => ({ label: item.label, value: item.compute(products) })),
     [products],
   );
+  const filteredAdminProducts = useMemo(() => {
+    const needle = inventoryQuery.trim().toLowerCase();
+    if (!needle) return products;
+
+    return products.filter((product) =>
+      [
+        product.name,
+        product.reference,
+        product.brand,
+        product.category,
+        product.description,
+        availabilityLabel(product),
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(needle),
+    );
+  }, [inventoryQuery, products]);
 
   const uploadImage = async (event) => {
     const files = [...(event.target.files || [])];
@@ -1152,6 +1321,31 @@ function AdminPage() {
       image_urls: [...String(value.image_urls || '').split('\n').filter(Boolean), ...urls.slice(value.image_url ? 0 : 1)].join('\n'),
     }));
     setStatus(`${urls.length} image(s) ajoutee(s).`);
+  };
+
+  const approveTestimonial = async (testimonial) => {
+    setTestimonialStatus('Validation...');
+    const { error } = await supabase
+      .from('testimonials')
+      .update({ approved: true })
+      .eq('id', testimonial.id);
+
+    setTestimonialStatus(error ? error.message : ADMIN_COPY.approvedLabel);
+    loadAdminTestimonials(setAdminTestimonials, setTestimonialStatus);
+  };
+
+  const removeTestimonial = async (testimonial) => {
+    const confirmed = window.confirm(`${ADMIN_COPY.deleteLabel} ${testimonial.name} ?`);
+    if (!confirmed) return;
+
+    setTestimonialStatus('Suppression...');
+    const { error } = await supabase
+      .from('testimonials')
+      .delete()
+      .eq('id', testimonial.id);
+
+    setTestimonialStatus(error ? error.message : 'Avis supprime.');
+    loadAdminTestimonials(setAdminTestimonials, setTestimonialStatus);
   };
 
   if (!hasSupabaseConfig) {
@@ -1348,9 +1542,18 @@ function AdminPage() {
               </div>
               <PackageSearch size={22} />
             </div>
+            <label className="admin-search">
+              <Search size={17} />
+              <input
+                type="search"
+                placeholder={ADMIN_COPY.inventorySearchPlaceholder}
+                value={inventoryQuery}
+                onChange={(event) => setInventoryQuery(event.target.value)}
+              />
+            </label>
             <div className="admin-list">
-              {products.length ? (
-                products.map((product) => (
+              {filteredAdminProducts.length ? (
+                filteredAdminProducts.map((product) => (
                   <div className="admin-row" key={product.id}>
                     <div className="admin-product-main">
                       <span className="admin-thumb">
@@ -1399,6 +1602,56 @@ function AdminPage() {
             </div>
           </div>
         </div>
+
+        <div className="admin-list-panel testimonials-admin-panel">
+          <div className="panel-title">
+            <div>
+              <h2>{ADMIN_COPY.testimonialsTitle}</h2>
+              <p>{ADMIN_COPY.testimonialsHint}</p>
+            </div>
+            <MessageCircle size={22} />
+          </div>
+          <div className="admin-list">
+            {adminTestimonials.length ? (
+              adminTestimonials.map((testimonial) => (
+                <div className="admin-row testimonial-admin-row" key={testimonial.id}>
+                  <div>
+                    <strong>{testimonial.name}</strong>
+                    <span>
+                      {[testimonial.location, testimonial.approved ? ADMIN_COPY.approvedLabel : 'En attente']
+                        .filter(Boolean)
+                        .join(' | ')}
+                    </span>
+                    <p>{testimonial.comment}</p>
+                  </div>
+                  <div className="row-actions">
+                    {!testimonial.approved && (
+                      <button
+                        className="icon-button"
+                        type="button"
+                        onClick={() => approveTestimonial(testimonial)}
+                        title={ADMIN_COPY.approveLabel}
+                      >
+                        <CheckCircle2 size={18} />
+                      </button>
+                    )}
+                    <button
+                      className="icon-button danger"
+                      type="button"
+                      onClick={() => removeTestimonial(testimonial)}
+                      title={ADMIN_COPY.deleteLabel}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">{ADMIN_COPY.emptyTestimonials}</div>
+            )}
+          </div>
+          {testimonialStatus && <p className="form-status">{testimonialStatus}</p>}
+        </div>
       </section>
     </main>
   );
@@ -1416,6 +1669,21 @@ async function loadAdminProducts(setProducts, setStatus) {
   }
 
   setProducts(sortProducts(data || []));
+}
+
+async function loadAdminTestimonials(setTestimonials, setStatus) {
+  const { data, error } = await supabase
+    .from('testimonials')
+    .select('id,name,location,comment,approved,created_at')
+    .order('approved', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    setStatus(ADMIN_COPY.testimonialsTableMissing);
+    return;
+  }
+
+  setTestimonials(data || []);
 }
 
 function SetupNotice() {
@@ -1450,5 +1718,7 @@ function Footer({ navigate }) {
 }
 
 export default App;
+
+
 
 
