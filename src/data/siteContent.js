@@ -35,14 +35,16 @@ export const STORE_INFO = {
   legalName: "Societe MEM d'Electricite",
   brandName: 'Kammoun Lighting',
   brandInitials: 'KL',
+  logoPath: '/assets/kammoun-logo.png',
   phone: '+216 22 400 000',
   telHref: 'tel:+21622400000',
   address: 'Tunisie',
   mapUrl: 'https://maps.app.goo.gl/6Sqn7qhkrnVcyZRU6',
   facebookUrl: 'https://www.facebook.com/p/Sté-MEM-délectricité-100054271100283/',
   openingHours: [
-    'Lundi - Vendredi: 8h à 17h',
-    'Samedi: 8h à 15h',
+    'Lundi - Vendredi: 8h - 12h30, 14h - 17h',
+    'Samedi: 8h - 12h30',
+    'Dimanche: Fermé',
   ],
 };
 
@@ -91,6 +93,25 @@ export const PAGE_COPY = {
       'Kammoun Lighting presente les produits disponibles au magasin et garde le contact direct avec les clients pour confirmer les prix, les quantites et les disponibilites.',
     aboutCta: 'En savoir plus',
     contactCta: 'Contact',
+  },
+  brandLogos: {
+    eyebrow: 'Nos marques',
+    title: 'Marques disponibles au magasin',
+    text: 'Les marques peuvent changer selon les arrivages et le stock.',
+  },
+  testimonials: {
+    eyebrow: 'Avis clients',
+    title: 'Ce que disent les clients',
+    text: 'Avis temporaires pour montrer la section. Ils pourront etre remplaces par de vrais avis.',
+    formTitle: 'Ajouter un commentaire',
+    namePlaceholder: 'Votre nom',
+    locationPlaceholder: 'Votre ville (optionnel)',
+    commentPlaceholder: 'Votre commentaire',
+    submitLabel: 'Envoyer',
+    helperText: 'Votre commentaire sera visible apres validation par un administrateur.',
+    successMessage: 'Merci, votre commentaire a ete envoye pour validation.',
+    missingFieldsMessage: 'Ajoutez votre nom et votre commentaire.',
+    errorMessage: 'Impossible d’envoyer le commentaire pour le moment.',
   },
   catalog: {
     eyebrow: 'Catalogue',
@@ -219,10 +240,70 @@ export const ADMIN_COPY = {
   formHint: 'Les champs peuvent etre completes plus tard.',
   inventoryTitle: 'Inventaire',
   inventoryHint: 'Produits enregistres dans Supabase.',
+  inventorySearchPlaceholder: 'Rechercher dans l’inventaire...',
   emptyInventory: 'Aucun produit pour le moment.',
+  testimonialsTitle: 'Avis clients',
+  testimonialsHint: 'Commentaires envoyes par les visiteurs.',
+  emptyTestimonials: 'Aucun avis en attente.',
+  approveLabel: 'Approuver',
+  approvedLabel: 'Approuve',
+  deleteLabel: 'Supprimer',
+  testimonialsTableMissing:
+    'La table testimonials n’existe pas encore. Execute le SQL dans Supabase.',
   setupTitle: 'Supabase pas encore connecte',
   setupText: 'Ajoute les variables de .env.example dans un fichier .env.local, puis relance le site.',
 };
+
+export const BRAND_LOGOS = [
+  {
+    name: 'Somef',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=somef.tn&sz=128',
+    website: 'https://www.somef.tn/',
+  },
+  {
+    name: 'Platinum',
+    logoUrl: 'https://dummyimage.com/220x90/0d47a1/ffffff&text=PLATINUM',
+    website: '',
+  },
+  {
+    name: 'Schneider Electric',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=se.com&sz=128',
+    website: 'https://www.se.com/',
+  },
+  {
+    name: 'Legrand',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=legrandgroup.com&sz=128',
+    website: 'https://www.legrandgroup.com/',
+  },
+  {
+    name: 'Philips',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=philips.com&sz=128',
+    website: 'https://www.philips.com/',
+  },
+  {
+    name: 'LEDVANCE',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=ledvance.com&sz=128',
+    website: 'https://www.ledvance.com/',
+  },
+];
+
+export const TESTIMONIALS = [
+  {
+    name: 'Mohamed Ben Salem',
+    location: 'Sfax',
+    text: 'Service rapide sur WhatsApp, j’ai trouve les projecteurs LED qu’il me fallait.',
+  },
+  {
+    name: 'Amel Trabelsi',
+    location: 'Tunis',
+    text: 'Catalogue clair, pratique pour verifier les modeles avant de se deplacer.',
+  },
+  {
+    name: 'Youssef Kammoun',
+    location: 'Sousse',
+    text: 'Bon conseil pour choisir l’eclairage d’un petit local commercial.',
+  },
+];
 
 export const ADMIN_STATS = [
   { label: 'Visibles', compute: (products) => products.filter((product) => product.active).length },
@@ -263,3 +344,4 @@ export const ADMIN_FILE_ACTIONS = [
   { label: 'Ajouter images', accept: 'image/*', multiple: true, action: 'images' },
   { label: 'Import Excel/CSV', accept: '.csv,text/csv,.xlsx,.xls', action: 'import' },
 ];
+
