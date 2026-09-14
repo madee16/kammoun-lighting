@@ -86,3 +86,49 @@ export const mapCsvProduct = (row) => {
     active: row.active !== 'false' && row.actif !== 'false',
   };
 };
+
+const CSV_HEADERS = [
+  'name',
+  'reference',
+  'brand',
+  'category',
+  'description',
+  'wattage',
+  'color_temperature',
+  'stock_quantity',
+  'price',
+  'availability_status',
+  'image_url',
+  'image_urls',
+  'active',
+  'featured',
+  'is_new',
+  'show_price',
+];
+
+const csvCell = (value) => {
+  const text = value == null ? '' : String(value);
+  return /[";, \n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+export const productsToCsv = (products) => {
+  const rows = products.map((product) =>
+    Array.isArray(product.image_urls)
+      ? { ...product, image_urls: product.image_urls.join('|') }
+      : product,
+  );
+  const lines = rows.map((product) => CSV_HEADERS.map((header) => csvCell(product[header])).join(';'));
+  return `\uFEFF${[CSV_HEADERS.join(';'), ...lines].join('\r\n')}`;
+};
+
+export const downloadCsvFile = (filename, content, type = 'text/csv;charset=utf-8;') => {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
