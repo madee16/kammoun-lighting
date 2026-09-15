@@ -227,8 +227,17 @@ export const WHATSAPP_ACTION_LABELS = {
   availability: 'la disponibilite',
 };
 
+export const ADMIN_DEVICE_ACCESS_KEY = 'kl_admin_device_unlocked';
+export const ADMIN_DEVICE_PASSPHRASE_HASH =
+  'f6b9a9851afe1c4fccc08bb2062807f8a329164a8e84cd713a199a271f0baba3';
+
 export const ADMIN_COPY = {
   privateEyebrow: 'Espace prive',
+  deviceTitle: 'Acces restreint',
+  deviceText: 'Saisis le code d’acces pour ouvrir la gestion.',
+  devicePlaceholder: 'Code d’acces',
+  deviceCta: 'Ouvrir',
+  deviceDenied: 'Code incorrect.',
   loginTitle: 'Gestion Kammoun Lighting',
   loginText: 'Connecte-toi pour gerer les produits, le stock et les photos.',
   emailPlaceholder: 'Email',

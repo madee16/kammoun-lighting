@@ -27,6 +27,8 @@ import { ThemeToggle } from '../components/ui/ThemeToggle.jsx';
 import {
   ADMIN_CHECKBOX_FIELDS,
   ADMIN_COPY,
+  ADMIN_DEVICE_ACCESS_KEY,
+  ADMIN_DEVICE_PASSPHRASE_HASH,
   ADMIN_FILE_ACTIONS,
   ADMIN_STATS,
   ADMIN_TEXT_FIELDS,
@@ -48,6 +50,11 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif'];
 
 export function AdminPage() {
+  const [deviceUnlocked, setDeviceUnlocked] = useState(
+    () => localStorage.getItem(ADMIN_DEVICE_ACCESS_KEY) === '1',
+  );
+  const [devicePassphrase, setDevicePassphrase] = useState('');
+  const [deviceError, setDeviceError] = useState(false);
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -100,6 +107,25 @@ export function AdminPage() {
   const signOut = async () => {
     await supabase.auth.signOut();
     setProducts([]);
+  };
+
+  const unlockDevice = async (event) => {
+    event.preventDefault();
+    const data = new TextEncoder().encode(devicePassphrase);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    const hash = [...new Uint8Array(digest)]
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+
+    if (hash !== ADMIN_DEVICE_PASSPHRASE_HASH) {
+      setDeviceError(true);
+      return;
+    }
+
+    localStorage.setItem(ADMIN_DEVICE_ACCESS_KEY, '1');
+    setDeviceUnlocked(true);
+    setDeviceError(false);
+    setDevicePassphrase('');
   };
 
   const saveProduct = async (event) => {
@@ -250,7 +276,7 @@ export function AdminPage() {
       }
 
       const safeName = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-');
-      const path = `${Date.now()}-${safeName}`;
+      const path = `public/${Date.now()}-${safeName}`;
 
       const { error } = await supabase.storage
         .from('product-images')
@@ -305,6 +331,36 @@ export function AdminPage() {
 
   if (!hasSupabaseConfig) {
     return <SetupNotice />;
+  }
+
+  if (!deviceUnlocked) {
+    return (
+      <main className="admin-shell">
+        <form className="login-card" onSubmit={unlockDevice}>
+          <span className="admin-logo">
+            <ShieldCheck size={30} />
+          </span>
+          <div>
+            <p className="eyebrow">{ADMIN_COPY.privateEyebrow}</p>
+            <h1>{ADMIN_COPY.deviceTitle}</h1>
+          </div>
+          <p>{ADMIN_COPY.deviceText}</p>
+          <input
+            type="password"
+            placeholder={ADMIN_COPY.devicePlaceholder}
+            aria-label={ADMIN_COPY.devicePlaceholder}
+            value={devicePassphrase}
+            onChange={(event) => setDevicePassphrase(event.target.value)}
+            required
+          />
+          <button className="primary-button" type="submit">
+            <ShieldCheck size={18} />
+            {ADMIN_COPY.deviceCta}
+          </button>
+          {deviceError && <FormStatus status={{ text: ADMIN_COPY.deviceDenied, type: 'error' }} />}
+        </form>
+      </main>
+    );
   }
 
   if (!session) {
