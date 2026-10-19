@@ -1,17 +1,8 @@
-import { mapCsvProduct } from './csv.js';
-
-const normalizeSpreadsheetHeader = (value) =>
-  String(value || '')
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_|_$/g, '');
+import { mapCsvProduct, normalizeHeader } from './csv.js';
 
 export const spreadsheetRowsToProducts = (rows) => {
   if (!rows.length) return [];
-  const headers = rows[0].map(normalizeSpreadsheetHeader);
+  const headers = rows[0].map(normalizeHeader);
 
   return rows.slice(1).map((cells) => {
     const row = headers.reduce((result, header, index) => {

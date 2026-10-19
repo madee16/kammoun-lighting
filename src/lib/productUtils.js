@@ -22,14 +22,16 @@ export const productMatchesPath = (product, value) => {
 export const productUrl = (product) => `${window.location.origin}${productPath(product)}`;
 
 export const productImages = (product) => {
+  if (!product) return [];
   const gallery = Array.isArray(product.image_urls)
     ? product.image_urls
     : String(product.image_urls || '')
-        .split('\n')
+        .split(/[\n|]/)
         .map((item) => item.trim())
         .filter(Boolean);
 
-  return [product.image_url, ...gallery].filter(Boolean);
+  const list = [product.image_url, ...gallery].filter(Boolean);
+  return [...new Set(list)];
 };
 
 export const availabilityLabel = (product) => {

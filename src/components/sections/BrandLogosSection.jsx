@@ -1,16 +1,32 @@
+import { useState } from 'react';
 import { BRAND_LOGOS, PAGE_COPY } from '../../data/siteContent.js';
 
 function BrandTile({ brand, ghost = false }) {
+  const [imgFailed, setImgFailed] = useState(false);
+
   const content = (
     <>
-      <img src={brand.logoUrl} alt={brand.name} loading="lazy" decoding="async" />
+      <div className="brand-logo-stage">
+        {!imgFailed && brand.logoUrl ? (
+          <img
+            src={brand.logoUrl}
+            alt={brand.name}
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <span className="brand-logo-fallback" aria-hidden="true">
+            {brand.name.slice(0, 2).toUpperCase()}
+          </span>
+        )}
+      </div>
       <strong>{brand.name}</strong>
     </>
   );
   const common = {
     className: 'brand-logo-card',
     'aria-hidden': ghost || undefined,
-    key: ghost ? `${brand.name}-clone` : brand.name,
   };
 
   if (brand.website) {
@@ -35,7 +51,10 @@ export function BrandLogosSection() {
     <section className="section brand-logo-section">
       <div className="section-header">
         <div>
-          <p className="eyebrow">{PAGE_COPY.brandLogos.eyebrow}</p>
+          <div className="section-index-row">
+            <span className="section-index">01</span>
+            <p className="eyebrow">{PAGE_COPY.brandLogos.eyebrow}</p>
+          </div>
           <h2>{PAGE_COPY.brandLogos.title}</h2>
         </div>
         <p className="section-note">{PAGE_COPY.brandLogos.text}</p>

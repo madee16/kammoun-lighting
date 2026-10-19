@@ -11,6 +11,19 @@ export const ROUTES = {
   about: '/a-propos',
 };
 
+export const SITE_DESCRIPTION = 'Catalogue de produits d\'eclairage Kammoun Lighting, Societe MEM d\'Electricite.';
+
+export const MARQUEE_ITEMS = [
+  'Projecteurs',
+  'Panneaux LED',
+  'Rubans LED',
+  'Spotlights',
+  'Eclairage pro',
+  'Regulateurs',
+  'Accessoires',
+  'Arrivages',
+];
+
 export const EMPTY_PRODUCT = {
   name: '',
   reference: '',
@@ -60,8 +73,6 @@ export const DEFAULT_CATEGORIES = [
 export const NAV_ITEMS = [
   { label: 'Accueil', path: ROUTES.home },
   { label: 'Catalogue', path: ROUTES.catalog },
-  { label: 'Categories', path: ROUTES.categories },
-  { label: 'Marques', path: ROUTES.brands },
   { label: 'A propos', path: ROUTES.about },
   { label: 'Contact', path: ROUTES.contact },
 ];
@@ -104,13 +115,13 @@ export const PAGE_COPY = {
   testimonials: {
     eyebrow: 'Avis clients',
     title: 'Ce que disent les clients',
-    text: 'Avis temporaires pour montrer la section. Ils pourront etre remplaces par de vrais avis.',
+    text: '',
     formTitle: 'Ajouter un commentaire',
     namePlaceholder: 'Votre nom',
     locationPlaceholder: 'Votre ville (optionnel)',
     commentPlaceholder: 'Votre commentaire',
     submitLabel: 'Envoyer',
-    helperText: 'Votre commentaire sera visible apres validation par un administrateur.',
+    helperText: '',
     successMessage: 'Merci, votre commentaire a ete envoye pour validation.',
     missingFieldsMessage: 'Ajoutez votre nom et votre commentaire.',
     errorMessage: 'Impossible d’envoyer le commentaire pour le moment.',
@@ -229,6 +240,7 @@ export const WHATSAPP_ACTION_LABELS = {
 
 export const ADMIN_DEVICE_ACCESS_KEY = 'kl_admin_device_unlocked';
 export const ADMIN_DEVICE_PASSPHRASE_HASH =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_DEVICE_PASSPHRASE_HASH) ||
   'f6b9a9851afe1c4fccc08bb2062807f8a329164a8e84cd713a199a271f0baba3';
 
 export const ADMIN_COPY = {
@@ -310,8 +322,7 @@ export const BRAND_LOGOS = [
   },
   {
     name: 'Hager',
-    logoUrl:
-      'https://assets.sc.hager.com/-/media/project/hagerdeep/shared/images/white-logo-hager.png?h=64&la=en&w=192&hash=2BA5F29EDAF71044456529C64B33E2D7',
+    logoUrl: 'https://www.google.com/s2/favicons?domain=hager.com&sz=128',
     website: 'https://hager.com/',
   },
   {

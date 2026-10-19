@@ -5,7 +5,7 @@ import App from './App.jsx';
 import { applyTheme, readStoredTheme, themeFromSystem } from './lib/theme.js';
 import './styles.css';
 
-applyTheme(readStoredTheme() || themeFromSystem());
+applyTheme(readStoredTheme() || 'light');
 
 registerSW({ immediate: true });
 

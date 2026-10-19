@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { ArrowLeft, ImagePlus, MessageCircle, PackageSearch } from 'lucide-react';
 import { EmptyState } from '../components/ui/EmptyState.jsx';
+import { KelvinSwatch } from '../components/ui/KelvinSwatch.jsx';
 import { LoadingDetail } from '../components/ui/LoadingDetail.jsx';
 import { PageHero } from '../components/ui/PageHero.jsx';
 import { PAGE_COPY, PRODUCT_DETAIL_FIELDS, ROUTES } from '../data/siteContent.js';
@@ -121,6 +122,7 @@ export function ProductDetailPage({ product, loading, navigate }) {
             <dt>Disponibilite</dt>
             <dd>{availabilityLabel(product)}</dd>
           </dl>
+          {product.color_temperature && <KelvinSwatch label={product.color_temperature} />}
           <label className="quantity-field">
             {PAGE_COPY.product.quantityLabel}
             <input

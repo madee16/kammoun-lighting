@@ -7,30 +7,40 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/kammoun-logo.png', 'assets/kammoun-logoicon.ico'],
+      includeAssets: [
+        'assets/kammoun-logo.png',
+        'assets/kammoun-logoicon.ico',
+        'assets/icons/apple-touch-icon.png',
+      ],
       manifest: {
         name: 'Kammoun Lighting',
         short_name: 'Kammoun',
         description:
           "Catalogue de produits d'eclairage Kammoun Lighting, Societe MEM d'Electricite.",
-        theme_color: '#1f7a4d',
-        background_color: '#f6f8f4',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',
         scope: '/',
         lang: 'fr',
         icons: [
           {
-            src: '/assets/kammoun-logo.png',
+            src: '/assets/icons/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/assets/kammoun-logo.png',
+            src: '/assets/icons/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
+            purpose: 'any',
+          },
+          {
+            src: '/assets/icons/icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
           },
         ],
       },

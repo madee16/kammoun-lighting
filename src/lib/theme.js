@@ -3,14 +3,19 @@ export const THEME_KEY = 'kammoun-lighting-theme';
 export function readStoredTheme() {
   try {
     const stored = localStorage.getItem(THEME_KEY);
-    return stored === 'light' || stored === 'dark' ? stored : null;
+    // User requested lighter theme (white/skyish): reset any legacy dark preference
+    if (stored === 'dark') {
+      localStorage.setItem(THEME_KEY, 'light');
+      return 'light';
+    }
+    return stored === 'light' ? stored : 'light';
   } catch {
-    return null;
+    return 'light';
   }
 }
 
 export function themeFromSystem() {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'light';
 }
 
 export function currentTheme() {

@@ -1,10 +1,9 @@
-import { PAGE_COPY, ROUTES, STORE_INFO } from '../data/siteContent.js';
+import { PAGE_COPY, ROUTES, SITE_DESCRIPTION, STORE_INFO } from '../data/siteContent.js';
 import { productImages, productMatchesPath } from './productUtils.js';
 
 const SITE_NAME = STORE_INFO.brandName;
 const LEGAL_NAME = STORE_INFO.legalName;
-const DEFAULT_DESCRIPTION =
-  "Catalogue de produits d'eclairage Kammoun Lighting, Societe MEM d'Electricite.";
+const DEFAULT_DESCRIPTION = SITE_DESCRIPTION;
 const DEFAULT_IMAGE_PATH = STORE_INFO.logoPath || '/assets/kammoun-logo.png';
 
 export const siteOrigin =

@@ -1,4 +1,4 @@
-import { ImagePlus, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, ImagePlus, MessageCircle } from 'lucide-react';
 import { PAGE_COPY } from '../../data/siteContent.js';
 import {
   availabilityLabel,
@@ -32,48 +32,59 @@ export function ProductCard({ product, navigate }) {
           </span>
           {product.is_new && <span className="badge new-badge">{PAGE_COPY.product.newBadge}</span>}
         </div>
-        <div>
+
+        <div className="product-info">
           <p className="product-meta">
             {[product.category, product.brand].filter(Boolean).join(' | ') || PAGE_COPY.product.fallbackMeta}
           </p>
           <h3>{product.name}</h3>
-          <p>{product.description || PAGE_COPY.product.fallbackDetails}</p>
+          <p className="product-desc">{product.description || PAGE_COPY.product.fallbackDetails}</p>
         </div>
       </button>
-      <div className="product-body">
-        <dl className="specs">
-          {product.reference && (
-            <>
-              <dt>Ref</dt>
-              <dd>{product.reference}</dd>
-            </>
-          )}
-          {product.wattage && (
-            <>
-              <dt>Puissance</dt>
-              <dd>{product.wattage}</dd>
-            </>
-          )}
-          {product.color_temperature && (
-            <>
-              <dt>Couleur</dt>
-              <dd>{product.color_temperature}</dd>
-            </>
-          )}
-        </dl>
-        <div className="product-footer">
-          <span className="price">
-            {priceVisible ? `${product.price} TND` : PAGE_COPY.product.priceOnRequest}
-          </span>
+
+      <dl className="specs">
+        {product.reference && (
+          <>
+            <dt>Ref</dt>
+            <dd>{product.reference}</dd>
+          </>
+        )}
+        {product.wattage && (
+          <>
+            <dt>Puissance</dt>
+            <dd>{product.wattage}</dd>
+          </>
+        )}
+        {product.color_temperature && (
+          <>
+            <dt>Couleur</dt>
+            <dd>{product.color_temperature}</dd>
+          </>
+        )}
+      </dl>
+
+      <div className="product-footer">
+        <span className="price">
+          {priceVisible ? `${product.price} TND` : PAGE_COPY.product.priceOnRequest}
+        </span>
+        <div className="product-footer-actions">
           <a
             className="whatsapp-button"
             href={`https://wa.me/${whatsappNumber}?text=${priceMessage}`}
             target="_blank"
             rel="noreferrer"
           >
-            <MessageCircle size={18} />
+            <MessageCircle size={17} />
             Prix
           </a>
+          <button
+            className="product-open"
+            type="button"
+            aria-label={`Ouvrir ${product.name}`}
+            onClick={() => navigate(productPath(product))}
+          >
+            <ArrowUpRight size={17} />
+          </button>
         </div>
       </div>
     </article>
